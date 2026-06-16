@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suite 401 Skye Tower - Waterscapes Kelowna</title>
+  
+  <!-- Tailwind CSS Engine -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Premium Typography Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- React 18 Core & DOM Engines via CDN -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+
+  <!-- Babel Compiler for In-Browser JSX Parsing -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  
+  <!-- Force the Classic React Runtime in Babel Standalone -->
+  <script>
+    Babel.registerPreset('react-classic', {
+      presets: [
+        [Babel.availablePresets.react, { runtime: 'classic' }]
+      ]
+    });
+  </script>
+
+  <style>
+    /* Clean canvas defaults for smooth Wix Iframe integration */
+    body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background-color: #f3f9fb;
+    }
+    /* Smooth transition animation for highlights modal */
+    .animate-fade-in {
+      animation: fadeIn 0.25s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    /* Hide scrollbar for horizontal thumbnail scrolling */
+    .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- React Root Container -->
+  <div id="root"></div>
+
+  <!-- React Application Compiler Script -->
+  <script type="text/babel" data-presets="react-classic">
+    
+    const { useState } = React;
+
+    // ==========================================
+    // BULLETPROOF RESORT & VISTA VECTOR ICONS
+    // ==========================================
+    const Icon = ({ name, className = "w-5 h-5", ...props }) => {
+      const icons = {
+        building: (
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} className={className} {...props}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+          </svg>
+        ),
+        mapPin: (
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} className={className} {...props}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        ),
+        fileText: (
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} className={className} {...props}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        ),
+        download: (
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} className={className} {...props}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+        ),
+        clock: (
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} className={className} {...props}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        ),
+        chevronLeft: (
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} className={className} {...props}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        ),
+        chevronRight: (
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} className={className} {...props}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        ),
+        x: (
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} className={className} {...props}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        )
+      };
+      return icons[name] || null;
+    };
+
+    // ==========================================
+    // RESORT GRADE LAKE & SUN PREVIEW FALLBACKS
+    // ==========================================
+    const PREVIEW_FALLBACKS = {
+      "17.jpg": "https://static.wixstatic.com/media/582523_c3ee5734059e4086ac1412b80b58942b~mv2.jpg",
+      "1.jpg": "https://static.wixstatic.com/media/582523_6778a917188741c088cf4f6234aaaa96~mv2.jpg", 
+      "2.jpg": "https://static.wixstatic.com/media/582523_bf5e8e3f5bba4c45a5f7367f6888ea58~mv2.jpg",  
+      "4.jpg": "https://static.wixstatic.com/media/582523_6c2ec6fd05484685b7dd90c467aaff6b~mv2.jpg",  
+      "5.jpg": "https://static.wixstatic.com/media/582523_da00e18bf6a24395b3cdeb19fe304520~mv2.jpg",  
+      "7.jpg": "https://static.wixstatic.com/media/582523_a9db83294e02430a93c180eb847e74f4~mv2.jpg",  
+      "9.jpg": "https://static.wixstatic.com/media/582523_49a19cf1046e4d009cb5a714a18adc9b~mv2.jpg",  
+      "den.jpg": "https://static.wixstatic.com/media/582523_634f7d962c404159a9ec14ab7803be57~mv2.jpg", 
+      "main_bath.jpg": "https://static.wixstatic.com/media/582523_252c014607dd4d61b7c3ec5b10fda2e4~mv2.jpg", 
+      "ensuite.jpg": "https://static.wixstatic.com/media/582523_e4808d44b6d246649c69589bfc2402a8~mv2.jpg", 
+      "master_view.jpg": "https://static.wixstatic.com/media/582523_dc17bbb845fe4fc6be58264047edb555~mv2.jpg",
+      "floorplan.jpg": "https://static.wixstatic.com/media/582523_7f0cfaa6edf245e2b70f62dcb9332a6c~mv2.jpg"
+    };
+
+    const resolvePreviewImage = (url) => {
+      if (PREVIEW_FALLBACKS[url]) return PREVIEW_FALLBACKS[url];
+      return url;
+    };
+
+    // ==========================================
+    // LISTING INITIAL DATA SEED
+    // ==========================================
+    const DEFAULT_LISTING = {
+      title: "Wetland & Lakeview Corner Sanctuary",
+      subtitle: "Suite 401 — Skye Tower at Waterscapes",
+      address: "401 - 1075 Sunset Drive, Kelowna, BC, V1Y 9Y9",
+      neighborhood: "Kelowna North Waterfront Park District",
+      price: 669000,
+      beds: 2,
+      baths: 2.0,
+      den: "Enclosed Den with Glass Sliders",
+      sqft: 1185,
+      strataFees: 718.44,
+      propertyTaxes: 3028.00,
+      yearBuilt: 2008,
+      parkingSpaces: 1,
+      storageLockers: 1,
+      petsAllowed: "Yes (2 cats or dogs up to 30lbs)",
+      rentalsAllowed: "Yes (Minimum 30-day lease term)",
+      heating: "Geothermal Heat Pump (Upgraded 2024)",
+      cooling: "Central Air Conditioning (Heat Pump loop)",
+      amenities: "Cascade Club (4,000 sqft): Outdoor heated pool, dual hot tubs, fitness studio, billiards room, library lounge, and rental guest suites.",
+      description: "Welcome to Suite 401 at Skye Tower, a remarkably spacious and uniquely positioned corner residence. Offering 1,185 square feet of fully concrete, soundproof construction, this '01' floorplan is widely desired for its direct West and Northwest orientation.\n\nFrom your living space and massive private balcony, gaze out over the serene, permanently protected Wetland Sanctuary of Waterfront Park. Your view captures rich green tree-lines, Okanagan Lake, and the rising mountain ranges beyond. Unlike lower-tower suites facing future development paths, this northwest corridor is ecologically protected, guaranteeing your natural outlook forever.\n\nInside, the residence has been comprehensively refreshed with high-profile wide-plank flooring, fresh architectural paint, and contemporary granite surfaces in the kitchen. An enclosed den featuring premium glass panels serves beautifully as a secluded workspace, music room, or guest bedroom. Step outside and enjoy instant access to pristine local beaches, Knox Mountain park trails, and the premium lakeside lifestyle Kelowna is famous for.",
+      heroBg: "https://static.wixstatic.com/media/582523_2f7ff027b42d4f2eb863d6115c8cda69~mv2.jpg",
+      images: [
+        { url: "1.jpg", caption: "Generous private covered balcony looking out to trees, hills, and Okanagan Lake" },
+        { url: "2.jpg", caption: "Gourmet kitchen with rich granite peninsula, custom cabinetry, and dark millwork" },
+        { url: "4.jpg", caption: "Light-filled lounge and dining area with panoramic corner window walls" },
+        { url: "5.jpg", caption: "Stunning dining layout looking out directly to the wetland balcony treetops" },
+        { url: "https://static.wixstatic.com/media/582523_3483685a57d44305bdc959559c0ece59~mv2.jpg", caption: "Spacious covered balcony offering a secluded outdoor living space" },
+        { url: "7.jpg", caption: "Oversized master retreat with mountain-view windows and private custom ensuite" },
+        { url: "master_view.jpg", caption: "Master bedroom view from the side of the bed, looking out at a spectacular vista of trees and mountains in two directions." },
+        { url: "9.jpg", caption: "Spacious 2nd bedroom configured as a music studio and executive home office" },
+        { url: "https://static.wixstatic.com/media/582523_634f7d962c404159a9ec14ab7803be57~mv2.jpg", caption: "Large enclosed den with premium architectural glass sliders" },
+        { url: "17.jpg", caption: "Bright, expansive open-concept living area framing wetlands & mountain horizons" },
+        { url: "https://static.wixstatic.com/media/582523_04b960004ca74de39bbb03f7046e37d6~mv2.jpg", caption: "Balcony view overlooking the serene wetlands and walking trails" },
+        { url: "https://static.wixstatic.com/media/582523_645ebeeb4f424b9f8f3909f12db1bc8c~mv2.jpg", caption: "Exclusive Cascade Club access: Outdoor heated pool and lounging area" },
+        { url: "https://static.wixstatic.com/media/582523_b08aaed6a2d94108a867a1b47ae958e0~mv2.jpg", caption: "Cascade Club community BBQ and courtyard gathering spaces" },
+        { url: "https://static.wixstatic.com/media/582523_2f7ff027b42d4f2eb863d6115c8cda69~mv2.jpg", caption: "Skye Tower beautifully situated alongside wetlands, park trails, and Okanagan Lake" },
+        { url: "floorplan.jpg", caption: "Suite 401 Architectural Floorplan Blueprint" }
+      ],
+      transparencyDocuments: [
+        {
+          id: "strata-plan",
+          title: "KAS3589 Strata Plan",
+          date: "Current",
+          size: "PDF",
+          desc: "Official registered strata plan detailing lot boundaries and unit allocation for Suite 401.",
+          highlights: "Confirms exact architectural footprint and registered strata lot dimensions.",
+          url: "https://582523ab-e276-4202-8aba-1b723e2e6071.usrfiles.com/ugd/582523_e76a4fc5677d4d71a3dfe24eef3b9d5c.pdf"
+        },
+        {
+          id: "tax-notice",
+          title: "Property Tax Notice",
+          date: "Most Recent",
+          size: "PDF",
+          desc: "The most recent municipal property tax assessment for the unit.",
+          highlights: "Verified annual tax amounts for clear financial planning.",
+          url: "https://582523ab-e276-4202-8aba-1b723e2e6071.usrfiles.com/ugd/582523_55d068720be34ba5b13adc8c05a63144.pdf"
+        },
+        {
+          id: "title-document",
+          title: "Title Document",
+          date: "Current",
+          size: "PDF",
+          desc: "Current state of title certificate confirming ownership and registered charges.",
+          highlights: "Clean title verification ready for conveyance.",
+          url: "https://582523ab-e276-4202-8aba-1b723e2e6071.usrfiles.com/ugd/582523_85824891eb2141b9a6d0a04933ed1446.pdf"
+        },
+        {
+          id: "strata-bylaws",
+          title: "KAS3589 Strata Bylaws",
+          date: "Amended April 28, 2026",
+          size: "PDF",
+          desc: "The complete and most recently amended guidelines for Waterscapes Skye community living.",
+          highlights: "Generous pet rules (2 small pets welcome), barbecue permissions active, seamless move-in schedules.",
+          url: "https://582523ab-e276-4202-8aba-1b723e2e6071.usrfiles.com/ugd/582523_68cb444ecddd48b5b329526633562d01.pdf"
+        },
+        {
+          id: "form-b",
+          title: "Form B Information Certificate",
+          date: "Arriving Friday",
+          size: "Pending",
+          desc: "Verifies the excellent fiscal health of Skye Tower, confirming no pending special assessments, high building reserves, and Unit 401's clear standing.",
+          highlights: "Strong building contingency fund, standard strata fees, includes parking stall and locker details.",
+          url: ""
+        },
+        {
+          id: "strata-minutes",
+          title: "24-Month Strata Council Minutes",
+          date: "Arriving Friday",
+          size: "Pending",
+          desc: "Full transcripts of strata operations. Demonstrates exceptional preventative maintenance loops, swift landscape management, and proactive structural updates.",
+          highlights: "No outstanding engineering actions, pool maintenance loops cleanly executed, elevator service logs verified.",
+          url: ""
+        },
+        {
+          id: "depreciation-report",
+          title: "Engineering Depreciation Report",
+          date: "Arriving Friday",
+          size: "Pending",
+          desc: "Professional third-party engineering appraisal. Details excellent ratings on concrete framing, mechanical boilers, and membrane systems.",
+          highlights: "Concrete structure is pristine. Building reserves are aligned with modern projections to mitigate future assessment risks.",
+          url: ""
+        },
+        {
+          id: "property-disclosure",
+          title: "Property Disclosure Statement (PDS)",
+          date: "In Progress",
+          size: "Pending",
+          desc: "Sellers' clear historical declaration confirming zero structural or mechanical deficiencies. Discloses recently updated central heating systems.",
+          highlights: "No history of damage or claims. Upgraded heating loop installed cleanly in 2024.",
+          url: ""
+        }
+      ]
+    };
+
+    function App() {
+      const listing = DEFAULT_LISTING;
+
+      // --- GALLERY & INTERACTIVE STATES ---
+      const [activeImage, setActiveImage] = useState(0);
+      const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+      const [bookingForm, setBookingForm] = useState({ name: "", email: "", comments: "" });
+      const [bookingSuccess, setBookingSuccess] = useState(false);
+      const [selectedDoc, setSelectedDoc] = useState(null);
+      const [selectedRoom, setSelectedRoom] = useState("Living & Dining Area");
+
+      // --- OPEN HOUSE VIP STATES ---
+      const [isOpenHouseModalOpen, setIsOpenHouseModalOpen] = useState(false);
+      const [rsvpForm, setRsvpForm] = useState({ name: "", email: "", beverage: "Red Wine" });
+      const [rsvpSuccess, setRsvpSuccess] = useState(false);
+
+      // --- BYPASS CHROME IFRAME BLOCKS FOR PDF DOWNLOADS ---
+      const triggerDownload = (url) => {
+        if (!url || url === "") return;
+        
+        let validUrl = url;
+        if (validUrl.startsWith("//")) {
+            validUrl = "https:" + validUrl;
+        } else if (!validUrl.startsWith("http")) {
+            validUrl = "https://" + validUrl;
+        }
+
+        try {
+          // The Canvas preview window strictly blocks window.top navigation.
+          // If we detect the preview environment, we safely open a new tab.
+          if (window.location.hostname.includes("googleusercontent")) {
+             window.open(validUrl, "_blank");
+          } else {
+             // On your live Wix site, top-level navigation completely avoids popup blockers.
+             window.top.location.href = validUrl;
+          }
+        } catch (e) {
+          // Ultimate fallback
+          window.open(validUrl, "_blank");
+        }
+      };
+
+      const handleBookingSubmit = (e) => {
+        e.preventDefault();
+        if (!bookingForm.name || !bookingForm.email) {
+          alert("Please fill out your credentials to request a tour.");
+          return;
+        }
+        
+        fetch("https://formsubmit.co/ajax/john@johncollins.biz", {
+          method: "POST",
+          headers: { 
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify({
+            name: bookingForm.name,
+            email: bookingForm.email,
+            comments: bookingForm.comments,
+            _subject: "New Website Inquiry: Suite 401 Waterscapes"
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          setBookingSuccess(true);
+          setTimeout(() => {
+            setBookingSuccess(false);
+            setBookingForm({ name: "", email: "", comments: "" });
+          }, 6000);
+        })
+        .catch(error => {
+          console.error("Form submission network error:", error);
+          alert("Network blocked the request. Please test on your live Wix site.");
+        });
+      };
+
+      const handleRsvpSubmit = (e) => {
+        e.preventDefault();
+        if (!rsvpForm.name || !rsvpForm.email) {
+          alert("Please fill out your name and email to claim your bonus entry.");
+          return;
+        }
+        
+        fetch("https://formsubmit.co/ajax/john@johncollins.biz", {
+          method: "POST",
+          headers: { 
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify({
+            name: rsvpForm.name,
+            email: rsvpForm.email,
+            beverage_preference: rsvpForm.beverage,
+            _subject: "Open House VIP RSVP: Suite 401 Waterscapes"
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          setRsvpSuccess(true);
+          setTimeout(() => {
+            setRsvpSuccess(false);
+            setIsOpenHouseModalOpen(false);
+            setRsvpForm({ name: "", email: "", beverage: "Red Wine" });
+          }, 4000);
+        })
+        .catch(error => {
+          console.error("RSVP network error:", error);
+          alert("Network blocked the request. Please test on your live Wix site.");
+        });
+      };
+
+      // ROOM DETAILS WITH ASSIGNED IMAGES FROM YOUR PORTFOLIO
+      const roomDetails = {
+        "Living & Dining Area": {
+          size: "14'3\" x 12'1\" (Living) | 10'5\" x 9'9\" (Dining)",
+          flooring: "Brand-New Wide-Plank Luxury Alpine-Mist Oak Flooring",
+          imgUrl: "4.jpg",
+          description: "An incredibly wide, bright open-concept core. Features massive floor-to-ceiling panoramic window arrays capturing direct sunlight and framing the protected Wetland conservation park trees and mountains.",
+          view: "Permanent West/NW sunset vistas, parklands, wetlands, and glimpse-vistas of Okanagan Lake."
+        },
+        "Gourmet Kitchen": {
+          size: "11'1\" x 9'11\"",
+          flooring: "Imported Italian Ceramic Slate Tile",
+          imgUrl: "2.jpg",
+          description: "Perfect wrap-around layout featuring premium shaker-style cabinets, dark modern handles, deep drawers, built-in pantries, and beautiful natural granite breakfast peninsula with overhanging glass pendant fixtures.",
+          view: "Looks over dining and living areas, sharing the massive west window light path."
+        },
+        "Primary Bedroom Suite": {
+          size: "11'8\" x 17'6\"",
+          flooring: "Brand-New Wide-Plank Luxury Alpine-Mist Oak Flooring",
+          imgUrl: "7.jpg",
+          description: "Extremely spacious king-size primary retreat. Features floor-to-ceiling outlooks over treetops to mountains, a walk-in wardrobe, and access to a massive 5-piece luxury tiled ensuite bathroom with a dual double-vanity, separate shower, and deep tub.",
+          view: "Breathtaking mountain peaks, green valley, and mature trees looking Northwest."
+        },
+        "Primary Ensuite": {
+          size: "Spacious 5-Piece Layout",
+          flooring: "Imported Italian Ceramic Slate Tile",
+          imgUrl: "ensuite.jpg",
+          description: "A luxurious 5-piece private ensuite retreat. Features a massive dual double-vanity, oversized wall-to-wall mirrors, a separate glass-enclosed walk-in shower, and a deep corner soaker tub for ultimate relaxation.",
+          view: "Interior Privacy."
+        },
+        "Second Bedroom / Office": {
+          size: "10'10\" x 10'4\"",
+          flooring: "Brand-New Wide-Plank Luxury Alpine-Mist Oak Flooring",
+          imgUrl: "9.jpg",
+          description: "Oversized second bedroom situated on the quiet eastern wing for exceptional layout separation. Perfect for guests or children, located steps from the secondary full bathroom.",
+          view: "Spacious interior privacy."
+        },
+        "Main Bathroom": {
+          size: "Full Guest Bath",
+          flooring: "Imported Italian Ceramic Slate Tile",
+          imgUrl: "main_bath.jpg",
+          description: "A fully appointed guest bathroom conveniently located adjacent to the second bedroom and main living areas. Features premium fixtures, a deep tub/shower combination, and contemporary lighting.",
+          view: "Interior Privacy."
+        },
+        "Enclosed Den": {
+          size: "14'5\" x 9'8\"",
+          flooring: "Brand-New Wide-Plank Luxury Alpine-Mist Oak Flooring",
+          imgUrl: "den.jpg",
+          description: "A proper, large-scale enclosed den. Upgraded with custom industrial-look framing and glass panel doors. Perfectly customized for an executive workspace, private piano studio, or guest room.",
+          view: "Refined light filtration via premium architectural glass sliders."
+        },
+        "Wetlands Terrace": {
+          size: "13'11\" x 9'2\" (Spacious Balcony)",
+          flooring: "Non-slip weatherized tile over concrete deck",
+          imgUrl: "1.jpg",
+          description: "Generous deep balcony designed for full-scale outdoor living, barbecues, and comfortable lounge setups. Positioned directly over the protected wetlands so you only hear birds and nature.",
+          view: "Protected vistas of the marsh, trees, lake, and mountains. Truly unique in downtown Kelowna."
+        }
+      };
+
+      const currentRoomData = roomDetails[selectedRoom] || roomDetails["Living & Dining Area"];
+
+      return (
+        <div 
+          className="text-slate-800 font-sans antialiased selection:bg-teal-200 selection:text-slate-900 relative"
+          style={{
+            backgroundImage: `url(${resolvePreviewImage(listing.heroBg)})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        >
+          {/* Global soft overlay so text is readable over the fixed background image */}
+          <div className="absolute inset-0 bg-[#f3f9fb]/70 backdrop-blur-[2px] z-0 pointer-events-none"></div>
+
+          {/* Wrapper to ensure content sits above the fixed background and overlay */}
+          <div className="relative z-10 flex flex-col min-h-screen">
+
+          {/* ==========================================
+              OPEN HOUSE VIP BANNER (Sticky)
+              ========================================== */}
+          <div 
+            onClick={() => setIsOpenHouseModalOpen(true)}
+            className="sticky top-0 z-[60] w-full bg-gradient-to-r from-teal-900 via-teal-800 to-teal-900 border-b border-teal-600/50 shadow-lg cursor-pointer group"
+          >
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col sm:flex-row items-center justify-center text-center gap-1 sm:gap-3 transition-transform group-hover:scale-[1.01] duration-300">
+              <p className="text-white text-xs sm:text-sm font-medium tracking-wide">
+                <span className="font-bold text-teal-300 uppercase tracking-widest text-[10px] sm:text-xs mr-2 border border-teal-500/30 bg-teal-800/50 px-2 py-0.5 rounded">Event</span>
+                <span className="font-extrabold mr-1">Open House This Sunday, June 21 (12–2 PM)</span> 
+                <span className="hidden sm:inline opacity-70 mx-1">|</span>
+                <span className="block sm:inline mt-0.5 sm:mt-0 opacity-90">Complimentary Drinks & Snacks</span>
+              </p>
+              <div className="flex items-center gap-1.5 mt-1 sm:mt-0 bg-white text-teal-900 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-[0_0_15px_rgba(20,184,166,0.5)] group-hover:bg-teal-50 transition-colors font-mono">
+                <span>🎁 RSVP to Win</span>
+                <Icon name="chevronRight" className="w-3 h-3" />
+              </div>
+            </div>
+          </div>
+
+          {/* ==========================================
+              LAKESIDE LUXURY HERO STAGE
+              ========================================== */}
+          <section className="relative pt-8 pb-16 lg:py-20 border-b border-teal-100/30">
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+              
+              {/* BRANDED AGENT BANNER */}
+              <div className="flex justify-end w-full mb-8 sm:mb-10 animate-fade-in">
+                <div className="inline-flex items-center justify-between bg-slate-950 rounded-[40px] p-1.5 shadow-2xl border border-slate-800 max-w-full">
+                  
+                  {/* Left: Headshot */}
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 shrink-0 rounded-full overflow-hidden border-2 border-slate-800 relative shadow-md bg-slate-900">
+                    <div className="absolute inset-0 shadow-[inset_0_2px_4px_rgba(0,0,0,0.6)] z-10 rounded-full pointer-events-none"></div>
+                    <img src="https://static.wixstatic.com/media/582523_6902dd24e85d4bf1903bce24a315d0ad~mv2.jpg" alt="John Collins" className="w-full h-full object-cover object-top relative z-0 scale-110" />
+                  </div>
+                  
+                  {/* Center: Details */}
+                  <div className="px-5 sm:px-8 text-center flex-1">
+                    <p className="text-[9px] sm:text-[10px] font-mono font-extrabold text-teal-400 tracking-widest uppercase">Contact John Collins</p>
+                    <a href="mailto:John@JohnCollins.biz" className="block text-xs sm:text-sm font-bold text-white hover:text-teal-300 transition mt-0.5">John@JohnCollins.biz</a>
+                    <p className="text-[10px] sm:text-xs font-medium text-slate-400 mt-0.5 tracking-wider font-mono">236.457.7003</p>
+                  </div>
+
+                  {/* Right: Logo */}
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 shrink-0 flex items-center justify-center overflow-hidden rounded-full mr-1">
+                    <img src="https://static.wixstatic.com/media/582523_9f72241791db48e48245a3df8ee58763~mv2.jpg" alt="John Collins Logo" className="w-full h-full object-contain scale-125 mix-blend-screen" />
+                  </div>
+
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+                
+                {/* HERO LEFT COLUMN */}
+                <div className="lg:col-span-5 text-left space-y-6">
+                  
+                  <div className="bg-white/95 backdrop-blur-md p-8 rounded-[32px] shadow-2xl border border-teal-50/50 space-y-6">
+                    
+                    <div className="space-y-4">
+                      <div className="flex flex-wrap gap-2">
+                        <span className="px-3 py-1 bg-teal-50 text-teal-800 border border-teal-200/60 rounded-full text-[10px] font-bold tracking-widest uppercase font-mono">
+                          🌲 Natural Wetland Screen
+                        </span>
+                        <span className="px-3 py-1 bg-sky-50 text-sky-800 border border-sky-200/60 rounded-full text-[10px] font-bold tracking-widest uppercase font-mono">
+                          💧 Okanagan Sunlight
+                        </span>
+                      </div>
+                      
+                      <div className="space-y-1">
+                        <p className="text-sm font-mono tracking-wider text-teal-700 uppercase font-extrabold">{listing.subtitle}</p>
+                        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 leading-[1.1] tracking-tight">
+                          {listing.title}
+                        </h1>
+                      </div>
+                    </div>
+
+                    {/* Daylit Frosted Glass Dashcard */}
+                    <div className="border border-teal-100 rounded-3xl p-4 sm:p-5 shadow-lg bg-teal-50/30">
+                      <div className="grid grid-cols-2 gap-y-5 gap-x-3 sm:gap-x-4">
+                        <div>
+                          <p className="text-[10px] text-teal-700 uppercase font-extrabold tracking-wider font-mono">List Price</p>
+                          <p className="text-xl min-[400px]:text-2xl sm:text-3xl font-black text-slate-950 mt-1 tracking-tight leading-none">${listing.price.toLocaleString()}</p>
+                        </div>
+                        
+                        <div>
+                          <p className="text-[10px] text-teal-700 uppercase font-extrabold tracking-wider font-mono">Corner Space</p>
+                          <p className="text-xl min-[400px]:text-2xl sm:text-3xl font-black text-teal-800 mt-1 tracking-tight leading-none">{listing.sqft} <span className="text-[10px] sm:text-xs font-normal text-slate-500">SqFt</span></p>
+                        </div>
+
+                        <div className="pr-1 sm:pr-0">
+                          <p className="text-[10px] text-teal-700 uppercase font-extrabold tracking-wider font-mono">Layout Details</p>
+                          <p className="text-xs sm:text-sm font-bold text-slate-800 mt-1 font-mono leading-tight">2 Bed + Enclosed Den</p>
+                        </div>
+
+                        <div>
+                          <p className="text-[10px] text-teal-700 uppercase font-extrabold tracking-wider font-mono">View Security</p>
+                          <p className="text-[10px] sm:text-xs text-teal-800 font-bold tracking-tight mt-1 leading-tight">🌳 Environmentally Protected</p>
+                        </div>
+                      </div>
+
+                      {/* NEW: Realtor Friendly Listing Block */}
+                      <div className="mt-5 p-3 bg-[#D92228] border border-[#C01D22] rounded-xl shadow-[0_4px_12px_rgba(217,34,40,0.25)] text-center">
+                        <p className="text-xs font-black text-white uppercase tracking-widest font-mono">REALTOR©-Friendly Listing</p>
+                        <p className="text-[10px] text-[#FFD1D1] font-semibold mt-1">Full Cooperating Commission for Buyer's Agent</p>
+                        <div className="mt-2.5 pt-2.5 border-t border-white/20">
+                          <a 
+                            href="https://www.realtor.ca/real-estate/29885782/1075-sunset-drive-unit-401-kelowna-kelowna-north" 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="inline-block text-[10px] text-white font-extrabold tracking-wider font-mono hover:text-[#FFD1D1] transition decoration-white/40 hover:decoration-[#FFD1D1] underline underline-offset-2"
+                          >
+                            MLS #: 10390759
+                          </a>
+                        </div>
+                      </div>
+
+                      <div className="mt-4 pt-3.5 border-t border-teal-100 flex items-center justify-between text-xs text-slate-600">
+                        <div className="flex items-center space-x-2">
+                          <Icon name="mapPin" className="text-teal-600 w-4 h-4" />
+                          <span className="font-mono text-slate-500">{listing.address.split(',')[0]}</span>
+                        </div>
+                        <span className="px-2 py-0.5 bg-teal-50 text-teal-700 rounded-md font-mono text-[10px] font-bold">SUITE 401</span>
+                      </div>
+                    </div>
+
+                    {/* Key Quick Bullet-List */}
+                    <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-left space-y-2">
+                      <p className="text-[10px] font-extrabold text-teal-700 uppercase tracking-widest font-mono">📌 Quick Highlights</p>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700">
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-teal-500 font-bold">✓</span> Upgraded Heating/AC (2024)
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-teal-500 font-bold">✓</span> New Mist-Oak Flooring
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                {/* HERO RIGHT COLUMN: Interactive Magazine Gallery Grid */}
+                <div className="lg:col-span-7 flex flex-col space-y-4">
+                  
+                  {/* Giant Premium Soft Framed Canvas */}
+                  <div className="flex flex-col space-y-3">
+                    <div 
+                      className="relative aspect-[16/10] w-full rounded-3xl overflow-hidden border border-white shadow-xl bg-slate-50 cursor-pointer group"
+                      onClick={() => setIsLightboxOpen(true)}
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent z-10 pointer-events-none"></div>
+                      <img 
+                        src={resolvePreviewImage(listing.images[activeImage]?.url)} 
+                        alt={listing.images[activeImage]?.caption} 
+                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors z-20 flex items-center justify-center">
+                        <span className="opacity-0 group-hover:opacity-100 bg-slate-900/60 text-white text-[10px] font-bold tracking-widest uppercase px-4 py-2 rounded-full backdrop-blur-md transition-opacity duration-300 shadow-lg border border-white/20">
+                          Click to Expand
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Caption Bar Relocated Under Image */}
+                    <div className="flex justify-between items-start bg-white p-4 rounded-2xl border border-teal-50 shadow-sm text-left">
+                      <div className="space-y-1.5 max-w-[85%]">
+                        <span className="px-2 py-0.5 bg-teal-50 text-teal-700 border border-teal-100 font-bold uppercase tracking-widest text-[9px] rounded font-mono">
+                          Featured Photo
+                        </span>
+                        <h3 className="text-slate-800 font-bold text-xs sm:text-sm leading-snug">
+                          {listing.images[activeImage]?.caption}
+                        </h3>
+                      </div>
+                      <span className="text-[11px] font-mono font-bold text-teal-700 bg-teal-50 px-2 py-1 rounded-lg shrink-0">
+                        {activeImage + 1} / {listing.images.length}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Thumbnails row converted to horizontal scroll */}
+                  <div className="flex overflow-x-auto space-x-2 pb-2 pt-1 snap-x hide-scrollbar">
+                    {listing.images.map((img, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setActiveImage(idx)}
+                        className={`shrink-0 w-24 sm:w-28 aspect-[16/10] rounded-xl overflow-hidden border-2 transition-all relative snap-start ${
+                          activeImage === idx 
+                            ? "border-teal-500 scale-[1.02] shadow-md z-10" 
+                            : "border-transparent opacity-60 hover:opacity-100 bg-white"
+                        }`}
+                      >
+                        <img src={resolvePreviewImage(img.url)} alt="Slider item" className="w-full h-full object-cover" />
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* INTEGRATED GLASS VIEW COMPASS */}
+                  <div className="backdrop-blur-md bg-white/95 border border-white rounded-[28px] p-4 shadow-xl flex items-center justify-between gap-4">
+                    <div className="w-16 h-16 rounded-full border border-sky-100 flex items-center justify-center bg-[#f0f9fa]/50 shrink-0 relative">
+                      <div className="absolute top-1 text-[8px] font-mono text-slate-400">N</div>
+                      <div className="absolute left-1 text-[8px] font-mono text-teal-600 font-bold">W</div>
+                      <div className="w-1.5 h-10 bg-teal-500 rounded-full origin-center -rotate-45 relative"></div>
+                    </div>
+                    <div className="text-left flex-1">
+                      <span className="text-[9px] font-mono font-bold tracking-wider text-teal-700 bg-teal-50 px-2 py-0.5 rounded uppercase font-mono">
+                        🧭 The Northwest Advantage View Guarantee
+                      </span>
+                      <p className="text-xs font-semibold text-slate-800 mt-1.5 leading-snug">
+                        Suite 401 frames an ecologically protected wetland sanctuary corridor. Unlike lower-tower suites facing future development paths, this Northwest orientation protects your outlook and natural light forever.
+                      </p>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+            {/* ==========================================
+                IMAGE LIGHTBOX MODAL (WIX SAFE ABSOLUTE)
+                ========================================== */}
+            {isLightboxOpen && (
+              <div className="absolute inset-0 z-[100] flex items-center justify-center bg-slate-950/95 backdrop-blur-xl transition-opacity rounded-b-[40px]">
+                
+                {/* Close Button */}
+                <button 
+                  onClick={(e) => { e.stopPropagation(); setIsLightboxOpen(false); }}
+                  className="absolute top-4 right-4 sm:top-8 sm:right-8 p-2 sm:p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors z-[110]"
+                >
+                  <Icon name="x" className="w-5 h-5 sm:w-6 sm:h-6" />
+                </button>
+
+                {/* Left Arrow */}
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveImage((prev) => (prev - 1 + listing.images.length) % listing.images.length);
+                  }}
+                  className="absolute left-2 sm:left-8 p-2 sm:p-3 bg-white/5 hover:bg-white/20 text-white rounded-full transition-colors z-[110] backdrop-blur-md"
+                >
+                  <Icon name="chevronLeft" className="w-6 h-6 sm:w-8 sm:h-8" />
+                </button>
+
+                {/* Right Arrow */}
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveImage((prev) => (prev + 1) % listing.images.length);
+                  }}
+                  className="absolute right-2 sm:right-8 p-2 sm:p-3 bg-white/5 hover:bg-white/20 text-white rounded-full transition-colors z-[110] backdrop-blur-md"
+                >
+                  <Icon name="chevronRight" className="w-6 h-6 sm:w-8 sm:h-8" />
+                </button>
+
+                {/* Main Image Container */}
+                <div className="relative w-full max-w-5xl h-full p-12 sm:p-24 flex flex-col items-center justify-center animate-fade-in z-[105] pointer-events-none">
+                  <img 
+                    src={resolvePreviewImage(listing.images[activeImage]?.url)} 
+                    alt={listing.images[activeImage]?.caption} 
+                    className="max-w-full max-h-[75%] sm:max-h-[85%] object-contain rounded-xl shadow-2xl pointer-events-auto"
+                  />
+                  <div className="mt-4 sm:mt-6 text-center pointer-events-auto">
+                    <p className="text-white text-xs sm:text-base font-medium max-w-2xl mx-auto drop-shadow-md">
+                      {listing.images[activeImage]?.caption}
+                    </p>
+                    <p className="text-teal-400 text-[10px] sm:text-xs font-mono mt-2 tracking-widest uppercase font-bold">
+                      {activeImage + 1} of {listing.images.length}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Background click to close */}
+                <div className="absolute inset-0 z-[100] cursor-zoom-out" onClick={() => setIsLightboxOpen(false)}></div>
+              </div>
+            )}
+
+          </section>
+
+          {/* ==========================================
+              MAIN COLLABORATIVE LAYOUT & NAVIGATION
+              ========================================== */}
+          <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              
+              {/* INTERACTIVE FLOORPLAN & PHOTO PORT (8 COLS) */}
+              <div className="lg:col-span-8 space-y-10">
+                
+                {/* INTERACTIVE FLOORPLAN AND PHOTO EXPLORER */}
+                <div id="floorplan-explorer" className="bg-white rounded-3xl p-6 sm:p-8 border border-teal-100 shadow-xl shadow-teal-950/5 space-y-6">
+                  
+                  <div className="text-left border-b border-teal-50 pb-4">
+                    <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-teal-600 bg-teal-50 px-2 py-1 rounded">
+                      🗺️ Live Visual Blueprint
+                    </span>
+                    <h3 className="text-2xl font-black text-slate-900 mt-2">
+                      Interactive Floorplan and Photo Explorer
+                    </h3>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Click any room on the blueprint to view its exact photo perspective, dimensions, and upgraded premium finishes.
+                    </p>
+                  </div>
+
+                  {/* Dynamic Interactive Split Deck (Floorplan Smaller on Left, Imagery Larger on Right) */}
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
+                    
+                    {/* Left Side: Smaller, Compact Skye Unit 401 Blueprint Map */}
+                    <div className="md:col-span-5 p-4 bg-gradient-to-br from-slate-50 to-[#eef9fa]/50 rounded-2xl border border-slate-100 flex flex-col items-center justify-center relative">
+                      
+                      <svg viewBox="0 0 380 410" className="w-full max-w-[240px] h-auto font-sans select-none">
+                        {/* Perimeter Exterior Line */}
+                        <path d="M 20,390 L 20,100 L 165,100 L 165,15 L 295,15 L 275,100 L 360,100 L 360,285 L 260,285 L 260,345 L 210,345 L 210,390 Z" fill="none" stroke="#0d9488" strokeWidth="2.5" />
+                        
+                        {/* 1. Wetlands Terrace Balcony */}
+                        <g onClick={() => setSelectedRoom("Wetlands Terrace")} className="cursor-pointer group">
+                          <rect 
+                            x="165" y="15" width="110" height="85" 
+                            fill={selectedRoom === "Wetlands Terrace" ? "rgba(20, 184, 166, 0.25)" : "rgba(255, 255, 255, 0.65)"} 
+                            stroke={selectedRoom === "Wetlands Terrace" ? "#0d9488" : "#94a3b8"} 
+                            strokeWidth={selectedRoom === "Wetlands Terrace" ? "2" : "1"} 
+                            strokeDasharray="3 3"
+                            className="transition-all duration-300"
+                          />
+                          <text x="180" y="55" fill="#0f766e" className="text-[7px] font-bold">WETLANDS TERRACE</text>
+                          <text x="195" y="68" fill="#0d9488" className="text-[6px] font-semibold">13'11" x 9'2"</text>
+                        </g>
+
+                        {/* 2. Living Room */}
+                        <g onClick={() => setSelectedRoom("Living & Dining Area")} className="cursor-pointer group">
+                          <path 
+                            d="M 245,100 L 360,100 L 360,195 L 245,195 Z" 
+                            fill={selectedRoom === "Living & Dining Area" ? "rgba(20, 184, 166, 0.25)" : "rgba(255, 255, 255, 0.65)"} 
+                            stroke={selectedRoom === "Living & Dining Area" ? "#0d9488" : "#94a3b8"} 
+                            strokeWidth={selectedRoom === "Living & Dining Area" ? "2" : "1"}
+                            className="transition-all duration-300"
+                          />
+                          <text x="280" y="145" fill="#334155" className="text-[8px] font-bold">LIVING</text>
+                          <text x="272" y="158" fill="#475569" className="text-[6px] font-mono">14'3" x 12'1"</text>
+                        </g>
+
+                        {/* 3. Dining Area */}
+                        <g onClick={() => setSelectedRoom("Living & Dining Area")} className="cursor-pointer group">
+                          <rect 
+                            x="165" y="100" width="80" height="95" 
+                            fill={selectedRoom === "Living & Dining Area" ? "rgba(20, 184, 166, 0.25)" : "rgba(255, 255, 255, 0.65)"} 
+                            stroke={selectedRoom === "Living & Dining Area" ? "#0d9488" : "#94a3b8"} 
+                            strokeWidth={selectedRoom === "Living & Dining Area" ? "2" : "1"}
+                            className="transition-all duration-300"
+                          />
+                          <text x="190" y="145" fill="#334155" className="text-[8px] font-bold">DINING</text>
+                          <text x="182" y="158" fill="#475569" className="text-[6px] font-mono">10'5" x 9'9"</text>
+                        </g>
+
+                        {/* 4. Primary Bedroom */}
+                        <g onClick={() => setSelectedRoom("Primary Bedroom Suite")} className="cursor-pointer group">
+                          <path 
+                            d="M 20,100 L 165,100 L 165,195 L 95,195 L 95,245 L 20,245 Z" 
+                            fill={selectedRoom === "Primary Bedroom Suite" ? "rgba(20, 184, 166, 0.25)" : "rgba(255, 255, 255, 0.65)"} 
+                            stroke={selectedRoom === "Primary Bedroom Suite" ? "#0d9488" : "#94a3b8"} 
+                            strokeWidth={selectedRoom === "Primary Bedroom Suite" ? "2" : "1"}
+                            className="transition-all duration-300"
+                          />
+                          <text x="35" y="145" fill="#334155" className="text-[8px] font-bold">MASTER SUITE</text>
+                          <text x="45" y="158" fill="#475569" className="text-[6px] font-mono">11'8" x 17'6"</text>
+                        </g>
+
+                        {/* 5. Master Ensuite */}
+                        <g onClick={() => setSelectedRoom("Primary Ensuite")} className="cursor-pointer group">
+                          <rect 
+                            x="20" y="245" width="95" height="75" 
+                            fill={selectedRoom === "Primary Ensuite" ? "rgba(20, 184, 166, 0.25)" : "rgba(241, 245, 249, 0.75)"} 
+                            stroke={selectedRoom === "Primary Ensuite" ? "#0d9488" : "#cbd5e1"} 
+                            strokeWidth={selectedRoom === "Primary Ensuite" ? "2" : "1"}
+                            className="transition-all duration-300"
+                          />
+                          <circle cx="45" cy="282" r="6" fill="none" stroke="#94a3b8" strokeWidth="1" />
+                          <circle cx="75" cy="282" r="6" fill="none" stroke="#94a3b8" strokeWidth="1" />
+                          <rect x="25" y="250" width="85" height="15" rx="3" fill="none" stroke="#cbd5e1" strokeWidth="1" />
+                          <text x="42" y="302" fill="#64748b" className="text-[5.5px] font-sans font-bold">5-PC ENSUITE</text>
+                        </g>
+
+                        {/* 6. Gourmet Kitchen */}
+                        <g onClick={() => setSelectedRoom("Gourmet Kitchen")} className="cursor-pointer group">
+                          <rect 
+                            x="165" y="195" width="95" height="85" 
+                            fill={selectedRoom === "Gourmet Kitchen" ? "rgba(20, 184, 166, 0.25)" : "rgba(255, 255, 255, 0.65)"} 
+                            stroke={selectedRoom === "Gourmet Kitchen" ? "#0d9488" : "#94a3b8"} 
+                            strokeWidth={selectedRoom === "Gourmet Kitchen" ? "2" : "1"}
+                            className="transition-all duration-300"
+                          />
+                          <path d="M 165,220 L 230,220 L 230,280" fill="none" stroke="#0d9488" strokeWidth="2.5" />
+                          <text x="180" y="240" fill="#334155" className="text-[7.5px] font-bold">KITCHEN</text>
+                          <text x="175" y="252" fill="#475569" className="text-[6px] font-mono">11'1" x 9'11"</text>
+                        </g>
+
+                        {/* 7. Enclosed Den */}
+                        <g onClick={() => setSelectedRoom("Enclosed Den")} className="cursor-pointer group">
+                          <rect 
+                            x="20" y="320" width="115" height="70" 
+                            fill={selectedRoom === "Enclosed Den" ? "rgba(20, 184, 166, 0.25)" : "rgba(255, 255, 255, 0.65)"} 
+                            stroke={selectedRoom === "Enclosed Den" ? "#0d9488" : "#94a3b8"} 
+                            strokeWidth={selectedRoom === "Enclosed Den" ? "2" : "1"}
+                            className="transition-all duration-300"
+                          />
+                          <text x="50" y="352" fill="#334155" className="text-[8px] font-bold">DEN</text>
+                          <text x="42" y="365" fill="#475569" className="text-[6.5px] font-mono">10'10" x 10'4"</text>
+                        </g>
+
+                        {/* 8. Second Bedroom */}
+                        <g onClick={() => setSelectedRoom("Second Bedroom / Office")} className="cursor-pointer group">
+                          <rect 
+                            x="260" y="195" width="100" height="90" 
+                            fill={selectedRoom === "Second Bedroom / Office" ? "rgba(20, 184, 166, 0.25)" : "rgba(255, 255, 255, 0.65)"} 
+                            stroke={selectedRoom === "Second Bedroom / Office" ? "#0d9488" : "#94a3b8"} 
+                            strokeWidth={selectedRoom === "Second Bedroom / Office" ? "2" : "1"}
+                            className="transition-all duration-300"
+                          />
+                          <text x="280" y="238" fill="#334155" className="text-[8px] font-bold">BEDROOM 2</text>
+                          <text x="282" y="250" fill="#475569" className="text-[6.5px] font-mono">14'5" x 9'8"</text>
+                        </g>
+
+                        {/* 9. Central Bathroom */}
+                        <g onClick={() => setSelectedRoom("Main Bathroom")} className="cursor-pointer group">
+                          <rect 
+                            x="165" y="280" width="95" height="40" 
+                            fill={selectedRoom === "Main Bathroom" ? "rgba(20, 184, 166, 0.25)" : "rgba(241, 245, 249, 0.75)"} 
+                            stroke={selectedRoom === "Main Bathroom" ? "#0d9488" : "#cbd5e1"} 
+                            strokeWidth={selectedRoom === "Main Bathroom" ? "2" : "1"}
+                            className="transition-all duration-300"
+                          />
+                          <text x="195" y="302" fill="#64748b" className="text-[6px] font-bold">MAIN BATH</text>
+                        </g>
+
+                        {/* Entry Foyer */}
+                        <g className="cursor-default">
+                          <path d="M 135,320 L 210,320 L 210,390 L 135,390 Z" fill="rgba(241, 245, 249, 0.6)" stroke="#cbd5e1" strokeWidth="1" />
+                          <text x="155" y="355" fill="#64748b" className="text-[6px] font-bold">ENTRY</text>
+                          <rect x="140" y="365" width="22" height="20" rx="2" fill="none" stroke="#cbd5e1" strokeWidth="0.75" />
+                          <text x="144" y="377" fill="#94a3b8" className="text-[5px] font-mono">W/D</text>
+                        </g>
+                      </svg>
+                      
+                      <span className="text-[8px] font-mono font-bold text-teal-600/80 bg-teal-50 px-2 py-0.5 mt-2 rounded">
+                        Skye Suite 401 Architectural Blueprint
+                      </span>
+                    </div>
+
+                    {/* Right Side: Larger, Prominent room photo & Specification Sync */}
+                    <div className="md:col-span-7 flex flex-col justify-between text-left space-y-4">
+                      
+                      {/* Syncing with exact photo */}
+                      <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden border border-slate-100 shadow-md">
+                        <img 
+                          src={resolvePreviewImage(currentRoomData.imgUrl)} 
+                          alt={selectedRoom} 
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute top-2 left-2 px-2.5 py-1 bg-white/90 backdrop-blur-md text-[9px] font-bold text-teal-800 rounded shadow-sm flex items-center gap-1">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                          <span>Suite View Match</span>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <div className="flex justify-between items-center">
+                          <h4 className="text-base font-extrabold text-slate-900 font-mono leading-none">{selectedRoom}</h4>
+                          <span className="text-xs bg-teal-100 text-teal-800 font-mono px-2 py-0.5 rounded font-bold">
+                            {currentRoomData.size}
+                          </span>
+                        </div>
+                        
+                        <p className="text-xs text-slate-600 leading-relaxed font-sans font-medium">
+                          {currentRoomData.description}
+                        </p>
+
+                        <div className="grid grid-cols-2 gap-2 pt-2">
+                          <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                            <span className="text-[9px] text-teal-600 uppercase font-bold block font-mono">Surface Flooring</span>
+                            <span className="text-xs font-semibold text-slate-800">{currentRoomData.flooring}</span>
+                          </div>
+                          <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                            <span className="text-[9px] text-teal-600 uppercase font-bold block font-mono">Protected Aspect</span>
+                            <span className="text-xs font-semibold text-slate-800">{currentRoomData.view}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+
+                  </div>
+                </div>
+
+                {/* WATERSCAPES CHRONICLES (BUILDING NARRATIVE - PLACED FIRST) */}
+                <div className="bg-white rounded-3xl p-6 sm:p-8 border border-teal-100 shadow-xl shadow-teal-950/5 text-left space-y-4">
+                  <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-teal-600 bg-teal-50 px-2 py-1 rounded">
+                    🏢 Building Narrative
+                  </span>
+                  <h3 className="text-xl sm:text-2xl font-black text-slate-900">
+                    The Waterscapes Lifestyle Profile
+                  </h3>
+                  <div className="text-slate-600 leading-relaxed text-xs sm:text-sm space-y-4 font-sans font-medium">
+                    {listing.description.split('\n\n').map((para, i) => (
+                      <p key={i}>{para}</p>
+                    ))}
+                  </div>
+                </div>
+
+                {/* SPECS AND HIGHLIGHT DETAILS (FORMAL SPECIFICATIONS - PLACED BELOW NARRATIVE) */}
+                <div className="bg-white rounded-3xl p-6 sm:p-8 border border-teal-100 shadow-xl shadow-teal-950/5 space-y-6">
+                  
+                  <div className="text-left border-b border-teal-50 pb-4">
+                    <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-teal-600 bg-teal-50 px-2 py-1 rounded">
+                      📋 Formal Specifications
+                    </span>
+                    <h3 className="text-2xl font-black text-slate-900 mt-2">
+                      Building Portfolio & MLS Disclosures
+                    </h3>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 text-xs sm:text-sm text-left font-sans">
+                    {[
+                      { label: "HOA Strata Fees", key: "strataFees", format: (v) => `$${v}/mo` },
+                      { label: "Annual Property Taxes", key: "propertyTaxes", format: (v) => `$${v}/yr` },
+                      { label: "Year Built", key: "yearBuilt" },
+                      { label: "Secured Underground Parking", key: "parkingSpaces" },
+                      { label: "Storage Locker allocation", key: "storageLockers" },
+                      { label: "Pet Policy Rules", key: "petsAllowed" },
+                      { label: "Rental Bylaw Status", key: "rentalsAllowed" },
+                      { label: "Heating Mechanism", key: "heating" },
+                      { label: "Cooling loop", key: "cooling" },
+                      { label: "Waterscapes Amenities", key: "amenities" },
+                    ].map((item) => (
+                      <div key={item.key} className="flex flex-col sm:flex-row sm:items-start justify-between py-2 border-b border-teal-50 gap-1">
+                        <span className="font-semibold text-slate-500">{item.label}</span>
+                        <span className="text-left sm:text-right text-slate-900 font-semibold text-xs sm:text-sm max-w-[280px]">
+                          {item.format ? item.format(listing[item.key]) : listing[item.key]}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+              </div>
+
+              {/* TOUR SCHEDULER & CONCIERGE BAR (4 COLS) */}
+              <div className="lg:col-span-4 space-y-8">
+
+                {/* Clean Scheduling Widget */}
+                <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 border border-teal-100 shadow-xl shadow-teal-950/5 text-left relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-2 bg-teal-500/10 text-teal-800 text-[9px] font-mono font-bold tracking-widest uppercase rounded-bl-xl border-l border-b border-teal-100 font-mono">
+                    Direct Portfolio
+                  </div>
+
+                  <h4 className="text-lg font-bold text-slate-900 mb-1">Get in Touch</h4>
+                  <p className="text-xs text-slate-500 mb-4 leading-relaxed">
+                    Connect directly with the seller representative to organize a showing, get more info, or present an offer.
+                  </p>
+
+                  {bookingSuccess ? (
+                    <div className="bg-emerald-50 border border-emerald-100 text-emerald-800 p-4 rounded-xl text-center text-xs space-y-1">
+                      <p className="font-bold">🎉 Message Dispatched Successfully!</p>
+                      <p>We'll coordinate with you directly.</p>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleBookingSubmit} className="space-y-3.5">
+                      <div className="space-y-1">
+                        <label className="text-[9px] uppercase tracking-wider font-extrabold text-teal-700 font-mono">Your Name</label>
+                        <input 
+                          type="text" 
+                          required
+                          value={bookingForm.name}
+                          onChange={(e) => setBookingForm({...bookingForm, name: e.target.value})}
+                          placeholder="Jane Doe"
+                          className="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs text-slate-800 focus:border-teal-400 focus:bg-white transition outline-none"
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-[9px] uppercase tracking-wider font-extrabold text-teal-700 font-mono">Email Coordinates</label>
+                        <input 
+                          type="email" 
+                          required
+                          value={bookingForm.email}
+                          onChange={(e) => setBookingForm({...bookingForm, email: e.target.value})}
+                          placeholder="jane@example.com"
+                          className="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs text-slate-800 focus:border-teal-400 focus:bg-white transition outline-none"
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-[9px] uppercase tracking-wider font-extrabold text-teal-700 font-mono">Comments</label>
+                        <textarea 
+                          required
+                          rows="3"
+                          value={bookingForm.comments}
+                          onChange={(e) => setBookingForm({...bookingForm, comments: e.target.value})}
+                          placeholder="How can we help?"
+                          className="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-xs text-slate-800 focus:border-teal-400 focus:bg-white transition outline-none resize-none"
+                        ></textarea>
+                      </div>
+
+                      <button 
+                        type="submit" 
+                        className="w-full py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs uppercase tracking-widest rounded-xl transition shadow-md font-mono"
+                      >
+                        SEND
+                      </button>
+                    </form>
+                  )}
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* ==========================================
+                TRANSPARENCY PORTAL & STRATA MATERIALS
+                ========================================== */}
+            <section id="transparency-portal" className="mt-16 bg-white/70 backdrop-blur-md rounded-[40px] p-6 sm:p-12 border border-white/50 shadow-xl relative">
+              
+              <div className="absolute top-0 left-0 w-32 h-32 bg-white/50 rounded-br-full blur-2xl pointer-events-none"></div>
+
+              <div className="text-center max-w-2xl mx-auto space-y-3 mb-10 relative z-10">
+                <span className="px-3 py-1 bg-white text-teal-700 border border-teal-200/50 rounded-full text-[10px] font-mono tracking-widest uppercase font-bold">
+                  🛡️ Full Document Stack
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-black text-slate-900">The Waterscapes Transparency Package</h2>
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans">
+                  We provide the full, unmodified strata minutes, budgets, disclosures, and third-party engineering depreciation metrics instantly—no secrets, no delays.
+                </p>
+              </div>
+
+              {/* Grid of Documents - UNGATED */}
+              <div className="space-y-6 animate-fade-in relative z-10">
+                <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-2xl text-center text-xs font-bold flex items-center justify-center space-x-2 font-sans shadow-sm">
+                  <span>🔓 Direct Open Portal: Inspect detailed highlights and download full report summaries directly below.</span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {listing.transparencyDocuments.map((doc, idx) => (
+                    <div 
+                      key={doc.id} 
+                      className="bg-white/95 border border-teal-100 rounded-3xl p-6 hover:border-teal-300 transition-all duration-350 flex flex-col justify-between group shadow-lg backdrop-blur-sm"
+                    >
+                      <div className="space-y-3">
+                        <div className="flex items-start justify-between">
+                          <span className="p-2.5 bg-teal-50 rounded-xl border border-teal-100 text-teal-600 transition-colors">
+                            <Icon name="fileText" className="w-5 h-5" />
+                          </span>
+                          <span className="text-[10px] font-mono px-2 py-0.5 bg-slate-100 text-slate-500 rounded-full font-bold font-mono">
+                            {doc.size}
+                          </span>
+                        </div>
+
+                        <div className="text-left space-y-1 font-sans">
+                          <h4 className="text-sm font-bold text-slate-800 group-hover:text-teal-600 transition-colors">{doc.title}</h4>
+                          <p className="text-[10px] text-slate-400 font-mono font-bold font-mono">Registry: {doc.date}</p>
+                          <p className="text-xs text-slate-600 leading-relaxed pt-2">{doc.desc}</p>
+                        </div>
+                      </div>
+
+                      <div className="mt-6 pt-3.5 border-t border-slate-100 flex space-x-2 font-mono">
+                        <button 
+                          onClick={() => setSelectedDoc(doc)}
+                          className="flex-1 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 text-[10px] font-bold uppercase tracking-wider rounded-xl transition duration-150"
+                        >
+                          Inspect
+                        </button>
+                        {doc.url ? (
+                          <button 
+                            onClick={() => triggerDownload(doc.url)}
+                            className="p-2 bg-teal-50 hover:bg-teal-100 text-teal-600 rounded-xl transition duration-150"
+                            title="Download Document Package"
+                          >
+                            <Icon name="download" className="w-4 h-4" />
+                          </button>
+                        ) : (
+                          <button 
+                            disabled
+                            className="p-2 bg-slate-50 text-slate-300 rounded-xl cursor-not-allowed"
+                            title="Document Pending"
+                          >
+                            <Icon name="clock" className="w-4 h-4" />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+          </main>
+
+                  {/* ==========================================
+              LEGAL TRANSPARENCY MODAL
+              ========================================== */}
+          {selectedDoc && (
+            <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm transition-opacity">
+              <div className="bg-white border border-teal-100 rounded-[32px] w-full max-w-xl overflow-hidden shadow-2xl relative text-left animate-fade-in">
+                
+                <div className="p-6 bg-slate-50 border-b border-teal-100 flex items-start justify-between">
+                  <div className="space-y-1">
+                    <span className="text-[9px] font-mono tracking-widest uppercase text-teal-600 font-bold font-mono">Official Document Digest</span>
+                    <h4 className="text-base sm:text-lg font-bold text-slate-900 font-sans">{selectedDoc.title}</h4>
+                  </div>
+                  <button 
+                    onClick={() => setSelectedDoc(null)}
+                    className="p-1 hover:bg-slate-200 rounded-lg text-slate-400 transition"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                <div className="p-6 space-y-5 font-sans font-medium">
+                  <div className="space-y-1">
+                    <p className="text-[10px] text-teal-600 font-mono uppercase tracking-wider font-mono">Digest Summary</p>
+                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">{selectedDoc.desc}</p>
+                  </div>
+
+                  <div className="space-y-1">
+                    <p className="text-[10px] text-teal-600 font-mono uppercase tracking-wider font-mono">Registry Release Stamp</p>
+                    <p className="text-xs sm:text-sm text-slate-900 font-semibold font-mono">{selectedDoc.date}</p>
+                  </div>
+
+                  <div className="p-4 bg-teal-50 rounded-2xl border border-teal-100 space-y-2">
+                    <div className="flex items-center space-x-2 text-xs font-bold text-teal-800">
+                      <span>💡</span>
+                      <span>Direct take-aways for prospective buyers:</span>
+                    </div>
+                    <p className="text-xs text-slate-700 leading-relaxed font-semibold">
+                      {selectedDoc.highlights}
+                    </p>
+                  </div>
+
+                  <div className="text-[10px] text-slate-400 italic leading-relaxed">
+                    * Transparency summaries are extracted directly from active strata council materials. Independent legal counsel review is always recommended during purchase agreements.
+                  </div>
+                </div>
+
+                <div className="p-4 bg-slate-50 border-t border-slate-100 flex space-x-2 font-mono">
+                  <button 
+                    onClick={() => setSelectedDoc(null)}
+                    className="flex-1 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs uppercase tracking-wider rounded-xl transition"
+                  >
+                    Close Highlights
+                  </button>
+                  {selectedDoc.url ? (
+                    <button 
+                      onClick={() => {
+                        triggerDownload(selectedDoc.url);
+                        setSelectedDoc(null);
+                      }}
+                      className="px-6 py-2 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition"
+                    >
+                      Download Registry summary
+                    </button>
+                  ) : (
+                    <button 
+                      disabled
+                      className="px-6 py-2 bg-slate-300 text-slate-500 font-bold text-xs uppercase tracking-wider rounded-xl cursor-not-allowed"
+                    >
+                      Pending Availability
+                    </button>
+                  )}
+                </div>
+
+              </div>
+            </div>
+          )}
+
+          {/* ==========================================
+              OPEN HOUSE VIP MODAL
+              ========================================== */}
+          {isOpenHouseModalOpen && (
+            <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md transition-opacity">
+              <div className="bg-white border border-teal-100 rounded-[32px] w-full max-w-md shadow-2xl relative my-8 text-left animate-fade-in flex flex-col">
+                
+                {/* Close Button */}
+                <button 
+                  onClick={() => setIsOpenHouseModalOpen(false)}
+                  className="absolute top-4 right-4 p-2 bg-slate-100 hover:bg-slate-200 text-slate-500 rounded-full transition z-10"
+                >
+                  <Icon name="x" className="w-4 h-4" />
+                </button>
+
+                <div className="bg-teal-900 p-6 sm:p-8 text-center relative overflow-hidden">
+                  <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-teal-600/30 rounded-full blur-2xl"></div>
+                  <h3 className="text-2xl sm:text-3xl font-black text-white relative z-10 tracking-tight">Sip, Tour, <span className="text-teal-300">& Win.</span></h3>
+                  <p className="text-teal-100 text-xs sm:text-sm mt-2 relative z-10 font-medium">
+                    This Sunday, June 21st • 12:00 PM – 2:00 PM
+                  </p>
+                </div>
+
+                <div className="p-6 sm:p-8 space-y-6">
+                  {rsvpSuccess ? (
+                    <div className="bg-emerald-50 border border-emerald-200 p-6 rounded-2xl text-center space-y-2 animate-fade-in">
+                      <div className="text-3xl mb-2">🥂</div>
+                      <h4 className="text-emerald-800 font-black text-lg">You're on the list!</h4>
+                      <p className="text-emerald-700 text-xs leading-relaxed">
+                        Your bonus entry has been secured. We look forward to pouring your {rsvpForm.beverage.toLowerCase()} this Sunday!
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="space-y-3">
+                        <p className="text-sm text-slate-600 leading-relaxed font-medium">
+                          Enjoy complimentary beverages and snacks while touring Suite 401. 
+                        </p>
+                        <div className="bg-amber-50 border border-amber-200 p-3 rounded-xl flex gap-3 items-start">
+                          <span className="text-xl">🎁</span>
+                          <p className="text-xs text-amber-900 font-semibold leading-relaxed">
+                            All attendees will be entered to win a <span className="font-black">$50 Gift Card</span> to your favorite local restaurant. RSVP below to claim a <span className="font-black text-amber-600 uppercase tracking-wider">Bonus Entry</span>!
+                          </p>
+                        </div>
+                      </div>
+
+                      <form onSubmit={handleRsvpSubmit} className="space-y-4 pt-2">
+                        <div className="space-y-1">
+                          <label className="text-[9px] uppercase tracking-wider font-extrabold text-teal-700 font-mono">Your Name</label>
+                          <input 
+                            type="text" 
+                            required
+                            value={rsvpForm.name}
+                            onChange={(e) => setRsvpForm({...rsvpForm, name: e.target.value})}
+                            placeholder="Jane Doe"
+                            className="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-sm text-slate-800 focus:border-teal-400 focus:bg-white outline-none transition"
+                          />
+                        </div>
+
+                        <div className="space-y-1">
+                          <label className="text-[9px] uppercase tracking-wider font-extrabold text-teal-700 font-mono">Your Email</label>
+                          <input 
+                            type="email" 
+                            required
+                            value={rsvpForm.email}
+                            onChange={(e) => setRsvpForm({...rsvpForm, email: e.target.value})}
+                            placeholder="To track your bonus entry"
+                            className="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-sm text-slate-800 focus:border-teal-400 focus:bg-white outline-none transition"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <label className="text-[9px] uppercase tracking-wider font-extrabold text-teal-700 font-mono">What should we pour you?</label>
+                          <div className="grid grid-cols-2 gap-2">
+                            {['Red Wine', 'White Wine', 'Beer', 'Soda / Water'].map(drink => (
+                              <button
+                                key={drink}
+                                type="button"
+                                onClick={() => setRsvpForm({...rsvpForm, beverage: drink})}
+                                className={`py-2 px-3 rounded-xl text-xs font-bold border transition ${
+                                  rsvpForm.beverage === drink 
+                                    ? 'bg-teal-600 border-teal-600 text-white shadow-md' 
+                                    : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
+                                }`}
+                              >
+                                {drink}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        <button 
+                          type="submit" 
+                          className="w-full mt-2 py-3 bg-teal-900 hover:bg-teal-800 text-white font-bold text-xs uppercase tracking-widest rounded-xl transition shadow-lg font-mono"
+                        >
+                          RSVP & Claim Bonus Entry
+                        </button>
+                      </form>
+                    </>
+                  )}
+                </div>
+
+              </div>
+            </div>
+          )}
+
+          {/* ==========================================
+              DISTRACTION FREE EXPOSURE FOOTER
+              ========================================== */}
+          <footer className="bg-white/50 backdrop-blur-md py-12 border-t border-white/40 text-center space-y-3 font-mono text-[10px] text-teal-800 font-bold select-none">
+            <p className="font-semibold tracking-widest uppercase">
+              Waterscapes Skye Tower • Suite 401 Featured Showcase
+            </p>
+            <p className="max-w-2xl mx-auto text-[10px] text-teal-700/80 leading-relaxed px-4 font-sans font-medium">
+              Disclaimer: This page is configured for hosted integration on johncollins.com. Specific measurements are estimated per architectural norms and are subject to verification during purchase agreements.
+            </p>
+          </footer>
+
+          </div>
+        </div>
+      );
+    }
+
+    // Render App inside the browser
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
