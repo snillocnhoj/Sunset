@@ -258,11 +258,11 @@
         {
           id: "property-disclosure",
           title: "Property Disclosure Statement (PDS)",
-          date: "Current",
-          size: "PDF",
+          date: "In Progress",
+          size: "Pending",
           desc: "Sellers' clear historical declaration confirming zero structural or mechanical deficiencies. Discloses recently updated central heating systems.",
           highlights: "No history of damage or claims. Upgraded heating loop installed cleanly in 2024.",
-          url: "https://582523ab-e276-4202-8aba-1b723e2e6071.usrfiles.com/ugd/582523_54e97cb2a1184e888b8b1fae45f12b60.pdf"
+          url: ""
         }
       ]
     };
@@ -278,8 +278,8 @@
       const [selectedDoc, setSelectedDoc] = useState(null);
       const [selectedRoom, setSelectedRoom] = useState("Living & Dining Area");
 
-      // --- INLINE RSVP STATES ---
-      const [isRsvpExpanded, setIsRsvpExpanded] = useState(false);
+      // --- OPEN HOUSE VIP STATES ---
+      const [isOpenHouseModalOpen, setIsOpenHouseModalOpen] = useState(false);
       const [rsvpForm, setRsvpForm] = useState({ name: "", email: "", beverage: "Red Wine" });
       const [rsvpSuccess, setRsvpSuccess] = useState(false);
 
@@ -459,7 +459,7 @@
               OPEN HOUSE VIP BANNER (Sticky)
               ========================================== */}
           <div 
-            onClick={() => setIsRsvpExpanded(!isRsvpExpanded)}
+            onClick={() => setIsOpenHouseModalOpen(true)}
             className="sticky top-0 z-[60] w-full bg-gradient-to-r from-teal-900 via-teal-800 to-teal-900 border-b border-teal-600/50 shadow-lg cursor-pointer group"
           >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col sm:flex-row items-center justify-center text-center gap-1 sm:gap-3 transition-transform group-hover:scale-[1.01] duration-300">
@@ -734,32 +734,6 @@
             )}
 
           </section>
-
-{/* INLINE RSVP FORM */}
-          {isRsvpExpanded && (
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
-              <div className="bg-white border-2 border-teal-200 rounded-3xl p-8 shadow-2xl">
-                {rsvpSuccess ? (
-                  <div className="text-center p-6 bg-emerald-50 rounded-2xl">
-                    <h4 className="text-emerald-800 font-black text-xl">You're on the list!</h4>
-                    <p className="text-emerald-700 mt-2">See you Sunday for your {rsvpForm.beverage.toLowerCase()}.</p>
-                  </div>
-                ) : (
-                  <form onSubmit={handleRsvpSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
-                    <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-teal-800 uppercase">Name</label>
-                      <input required type="text" value={rsvpForm.name} onChange={(e) => setRsvpForm({...rsvpForm, name: e.target.value})} className="w-full bg-slate-50 border p-3 rounded-xl" placeholder="Your Name" />
-                    </div>
-                    <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-teal-800 uppercase">Email</label>
-                      <input required type="email" value={rsvpForm.email} onChange={(e) => setRsvpForm({...rsvpForm, email: e.target.value})} className="w-full bg-slate-50 border p-3 rounded-xl" placeholder="Your Email" />
-                    </div>
-                    <button type="submit" className="md:col-span-2 py-3 bg-teal-900 text-white font-bold rounded-xl hover:bg-teal-800 transition">Confirm RSVP</button>
-                  </form>
-                )}
-              </div>
-            </div>
-          )}
 
           {/* ==========================================
               MAIN COLLABORATIVE LAYOUT & NAVIGATION
@@ -1253,7 +1227,113 @@
             </div>
           )}
 
-                    {/* ==========================================
+          {/* ==========================================
+              OPEN HOUSE VIP MODAL
+              ========================================== */}
+          {isOpenHouseModalOpen && (
+            <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md transition-opacity">
+              <div className="bg-white border border-teal-100 rounded-[32px] w-full max-w-md shadow-2xl relative my-8 text-left animate-fade-in flex flex-col">
+                
+                {/* Close Button */}
+                <button 
+                  onClick={() => setIsOpenHouseModalOpen(false)}
+                  className="absolute top-4 right-4 p-2 bg-slate-100 hover:bg-slate-200 text-slate-500 rounded-full transition z-10"
+                >
+                  <Icon name="x" className="w-4 h-4" />
+                </button>
+
+                <div className="bg-teal-900 p-6 sm:p-8 text-center relative overflow-hidden">
+                  <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-teal-600/30 rounded-full blur-2xl"></div>
+                  <h3 className="text-2xl sm:text-3xl font-black text-white relative z-10 tracking-tight">Sip, Tour, <span className="text-teal-300">& Win.</span></h3>
+                  <p className="text-teal-100 text-xs sm:text-sm mt-2 relative z-10 font-medium">
+                    This Sunday, June 21st • 12:00 PM – 2:00 PM
+                  </p>
+                </div>
+
+                <div className="p-6 sm:p-8 space-y-6">
+                  {rsvpSuccess ? (
+                    <div className="bg-emerald-50 border border-emerald-200 p-6 rounded-2xl text-center space-y-2 animate-fade-in">
+                      <div className="text-3xl mb-2">🥂</div>
+                      <h4 className="text-emerald-800 font-black text-lg">You're on the list!</h4>
+                      <p className="text-emerald-700 text-xs leading-relaxed">
+                        Your bonus entry has been secured. We look forward to pouring your {rsvpForm.beverage.toLowerCase()} this Sunday!
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="space-y-3">
+                        <p className="text-sm text-slate-600 leading-relaxed font-medium">
+                          Enjoy complimentary beverages and snacks while touring Suite 401. 
+                        </p>
+                        <div className="bg-amber-50 border border-amber-200 p-3 rounded-xl flex gap-3 items-start">
+                          <span className="text-xl">🎁</span>
+                          <p className="text-xs text-amber-900 font-semibold leading-relaxed">
+                            All attendees will be entered to win a <span className="font-black">$50 Gift Card</span> to your favorite local restaurant. RSVP below to claim a <span className="font-black text-amber-600 uppercase tracking-wider">Bonus Entry</span>!
+                          </p>
+                        </div>
+                      </div>
+
+                      <form onSubmit={handleRsvpSubmit} className="space-y-4 pt-2">
+                        <div className="space-y-1">
+                          <label className="text-[9px] uppercase tracking-wider font-extrabold text-teal-700 font-mono">Your Name</label>
+                          <input 
+                            type="text" 
+                            required
+                            value={rsvpForm.name}
+                            onChange={(e) => setRsvpForm({...rsvpForm, name: e.target.value})}
+                            placeholder="Jane Doe"
+                            className="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-sm text-slate-800 focus:border-teal-400 focus:bg-white outline-none transition"
+                          />
+                        </div>
+
+                        <div className="space-y-1">
+                          <label className="text-[9px] uppercase tracking-wider font-extrabold text-teal-700 font-mono">Your Email</label>
+                          <input 
+                            type="email" 
+                            required
+                            value={rsvpForm.email}
+                            onChange={(e) => setRsvpForm({...rsvpForm, email: e.target.value})}
+                            placeholder="To track your bonus entry"
+                            className="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-sm text-slate-800 focus:border-teal-400 focus:bg-white outline-none transition"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <label className="text-[9px] uppercase tracking-wider font-extrabold text-teal-700 font-mono">What should we pour you?</label>
+                          <div className="grid grid-cols-2 gap-2">
+                            {['Red Wine', 'White Wine', 'Beer', 'Soda / Water'].map(drink => (
+                              <button
+                                key={drink}
+                                type="button"
+                                onClick={() => setRsvpForm({...rsvpForm, beverage: drink})}
+                                className={`py-2 px-3 rounded-xl text-xs font-bold border transition ${
+                                  rsvpForm.beverage === drink 
+                                    ? 'bg-teal-600 border-teal-600 text-white shadow-md' 
+                                    : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
+                                }`}
+                              >
+                                {drink}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        <button 
+                          type="submit" 
+                          className="w-full mt-2 py-3 bg-teal-900 hover:bg-teal-800 text-white font-bold text-xs uppercase tracking-widest rounded-xl transition shadow-lg font-mono"
+                        >
+                          RSVP & Claim Bonus Entry
+                        </button>
+                      </form>
+                    </>
+                  )}
+                </div>
+
+              </div>
+            </div>
+          )}
+
+          {/* ==========================================
               DISTRACTION FREE EXPOSURE FOOTER
               ========================================== */}
           <footer className="bg-white/50 backdrop-blur-md py-12 border-t border-white/40 text-center space-y-3 font-mono text-[10px] text-teal-800 font-bold select-none">
