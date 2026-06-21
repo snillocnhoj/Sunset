@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Suite 401 Skye Tower - Waterscapes Kelowna</title>
   
-  <!-- Tailwind CSS Engine -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -19,19 +18,15 @@
     }
   </script>
 
-  <!-- Premium Typography Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <!-- React 18 Core & DOM Engines via CDN -->
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
 
-  <!-- Babel Compiler for In-Browser JSX Parsing -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   
-  <!-- Force the Classic React Runtime in Babel Standalone -->
   <script>
     Babel.registerPreset('react-classic', {
       presets: [
@@ -68,10 +63,8 @@
 </head>
 <body>
 
-  <!-- React Root Container -->
   <div id="root"></div>
 
-  <!-- React Application Compiler Script -->
   <script type="text/babel" data-presets="react-classic">
     
     const { useState } = React;
@@ -163,7 +156,7 @@
       den: "Enclosed Den with Glass Sliders",
       sqft: 1185,
       strataFees: 718.44,
-      propertyTaxes: 3028.00,
+      propertyTaxes: 2905.00, // Updated to 2905 per year
       yearBuilt: 2008,
       parkingSpaces: 1,
       storageLockers: 1,
@@ -171,6 +164,7 @@
       rentalsAllowed: "Yes (Minimum 30-day lease term)",
       heating: "Geothermal Heat Pump (Upgraded 2024)",
       cooling: "Central Air Conditioning (Heat Pump loop)",
+      electricityCost: 148.40,
       amenities: "Cascade Club (4,000 sqft): Outdoor heated pool, dual hot tubs, fitness studio, billiards room, library lounge, and rental guest suites.",
       description: "Welcome to Suite 401 at Skye Tower, a remarkably spacious and uniquely positioned corner residence. Offering 1,185 square feet of fully concrete, soundproof construction, this '01' floorplan is widely desired for its direct West and Northwest orientation.\n\nFrom your living space and massive private balcony, gaze out over the serene, permanently protected Wetland Sanctuary of Waterfront Park. Your view captures rich green tree-lines, Okanagan Lake, and the rising mountain ranges beyond. Unlike lower-tower suites facing future development paths, this northwest corridor is ecologically protected, guaranteeing your natural outlook forever.\n\nInside, the residence has been comprehensively refreshed with high-profile wide-plank flooring, fresh architectural paint, and contemporary granite surfaces in the kitchen. An enclosed den featuring premium glass panels serves beautifully as a secluded workspace, music room, or guest bedroom. Step outside and enjoy instant access to pristine local beaches, Knox Mountain park trails, and the premium lakeside lifestyle Kelowna is famous for.",
       heroBg: "https://static.wixstatic.com/media/582523_2f7ff027b42d4f2eb863d6115c8cda69~mv2.jpg",
@@ -275,15 +269,11 @@
       const [isLightboxOpen, setIsLightboxOpen] = useState(false);
       const [bookingForm, setBookingForm] = useState({ name: "", email: "", comments: "" });
       const [bookingSuccess, setBookingSuccess] = useState(false);
+      const [formError, setFormError] = useState("");
       const [selectedDoc, setSelectedDoc] = useState(null);
       const [selectedRoom, setSelectedRoom] = useState("Living & Dining Area");
 
-      // --- OPEN HOUSE VIP STATES ---
-      const [isOpenHouseModalOpen, setIsOpenHouseModalOpen] = useState(false);
-      const [rsvpForm, setRsvpForm] = useState({ name: "", email: "", beverage: "Red Wine" });
-      const [rsvpSuccess, setRsvpSuccess] = useState(false);
-
-      // --- BYPASS CHROME IFRAME BLOCKS FOR PDF DOWNLOADS ---
+      // --- STRICT NEW TAB PDF TRIGGERING ---
       const triggerDownload = (url) => {
         if (!url || url === "") return;
         
@@ -294,28 +284,18 @@
             validUrl = "https://" + validUrl;
         }
 
-        try {
-          // The Canvas preview window strictly blocks window.top navigation.
-          // If we detect the preview environment, we safely open a new tab.
-          if (window.location.hostname.includes("googleusercontent")) {
-             window.open(validUrl, "_blank");
-          } else {
-             // On your live Wix site, top-level navigation completely avoids popup blockers.
-             window.top.location.href = validUrl;
-          }
-        } catch (e) {
-          // Ultimate fallback
-          window.open(validUrl, "_blank");
-        }
+        // Strictly open PDF files in a new tab as requested
+        window.open(validUrl, "_blank");
       };
 
       const handleBookingSubmit = (e) => {
         e.preventDefault();
         if (!bookingForm.name || !bookingForm.email) {
-          alert("Please fill out your credentials to request a tour.");
+          setFormError("Please fill out your credentials to request a tour.");
           return;
         }
         
+        setFormError("");
         fetch("https://formsubmit.co/ajax/john@johncollins.biz", {
           method: "POST",
           headers: { 
@@ -339,42 +319,7 @@
         })
         .catch(error => {
           console.error("Form submission network error:", error);
-          alert("Network blocked the request. Please test on your live Wix site.");
-        });
-      };
-
-      const handleRsvpSubmit = (e) => {
-        e.preventDefault();
-        if (!rsvpForm.name || !rsvpForm.email) {
-          alert("Please fill out your name and email to claim your bonus entry.");
-          return;
-        }
-        
-        fetch("https://formsubmit.co/ajax/john@johncollins.biz", {
-          method: "POST",
-          headers: { 
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-          },
-          body: JSON.stringify({
-            name: rsvpForm.name,
-            email: rsvpForm.email,
-            beverage_preference: rsvpForm.beverage,
-            _subject: "Open House VIP RSVP: Suite 401 Waterscapes"
-          })
-        })
-        .then(response => response.json())
-        .then(data => {
-          setRsvpSuccess(true);
-          setTimeout(() => {
-            setRsvpSuccess(false);
-            setIsOpenHouseModalOpen(false);
-            setRsvpForm({ name: "", email: "", beverage: "Red Wine" });
-          }, 4000);
-        })
-        .catch(error => {
-          console.error("RSVP network error:", error);
-          alert("Network blocked the request. Please test on your live Wix site.");
+          setFormError("Network blocked the request. Please test on your live Wix site.");
         });
       };
 
@@ -442,7 +387,7 @@
 
       return (
         <div 
-          className="text-slate-800 font-sans antialiased selection:bg-teal-200 selection:text-slate-900 relative"
+          className="text-slate-800 font-sans antialiased selection:bg-teal-200 selection:text-slate-900 relative animate-fade-in"
           style={{
             backgroundImage: `url(${resolvePreviewImage(listing.heroBg)})`,
             backgroundSize: 'cover',
@@ -456,57 +401,11 @@
           <div className="relative z-10 flex flex-col min-h-screen">
 
           {/* ==========================================
-              OPEN HOUSE VIP BANNER (Sticky)
+              LAKESIDE LUXURY HERO STAGE (No Top Banner, Clean Space)
               ========================================== */}
-          <div 
-            onClick={() => setIsOpenHouseModalOpen(true)}
-            className="sticky top-0 z-[60] w-full bg-gradient-to-r from-teal-900 via-teal-800 to-teal-900 border-b border-teal-600/50 shadow-lg cursor-pointer group"
-          >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col sm:flex-row items-center justify-center text-center gap-1 sm:gap-3 transition-transform group-hover:scale-[1.01] duration-300">
-              <p className="text-white text-xs sm:text-sm font-medium tracking-wide">
-                <span className="font-bold text-teal-300 uppercase tracking-widest text-[10px] sm:text-xs mr-2 border border-teal-500/30 bg-teal-800/50 px-2 py-0.5 rounded">Event</span>
-                <span className="font-extrabold mr-1">Open House This Sunday, June 21 (12–2 PM)</span> 
-                <span className="hidden sm:inline opacity-70 mx-1">|</span>
-                <span className="block sm:inline mt-0.5 sm:mt-0 opacity-90">Complimentary Drinks & Snacks</span>
-              </p>
-              <div className="flex items-center gap-1.5 mt-1 sm:mt-0 bg-white text-teal-900 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-[0_0_15px_rgba(20,184,166,0.5)] group-hover:bg-teal-50 transition-colors font-mono">
-                <span>🎁 RSVP to Win</span>
-                <Icon name="chevronRight" className="w-3 h-3" />
-              </div>
-            </div>
-          </div>
-
-          {/* ==========================================
-              LAKESIDE LUXURY HERO STAGE
-              ========================================== */}
-          <section className="relative pt-8 pb-16 lg:py-20 border-b border-teal-100/30">
+          <section className="relative pt-6 pb-12 lg:pb-16 border-b border-teal-100/30">
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-              
-              {/* BRANDED AGENT BANNER */}
-              <div className="flex justify-end w-full mb-8 sm:mb-10 animate-fade-in">
-                <div className="inline-flex items-center justify-between bg-slate-950 rounded-[40px] p-1.5 shadow-2xl border border-slate-800 max-w-full">
-                  
-                  {/* Left: Headshot */}
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 shrink-0 rounded-full overflow-hidden border-2 border-slate-800 relative shadow-md bg-slate-900">
-                    <div className="absolute inset-0 shadow-[inset_0_2px_4px_rgba(0,0,0,0.6)] z-10 rounded-full pointer-events-none"></div>
-                    <img src="https://static.wixstatic.com/media/582523_6902dd24e85d4bf1903bce24a315d0ad~mv2.jpg" alt="John Collins" className="w-full h-full object-cover object-top relative z-0 scale-110" />
-                  </div>
-                  
-                  {/* Center: Details */}
-                  <div className="px-5 sm:px-8 text-center flex-1">
-                    <p className="text-[9px] sm:text-[10px] font-mono font-extrabold text-teal-400 tracking-widest uppercase">Contact John Collins</p>
-                    <a href="mailto:John@JohnCollins.biz" className="block text-xs sm:text-sm font-bold text-white hover:text-teal-300 transition mt-0.5">John@JohnCollins.biz</a>
-                    <p className="text-[10px] sm:text-xs font-medium text-slate-400 mt-0.5 tracking-wider font-mono">236.457.7003</p>
-                  </div>
-
-                  {/* Right: Logo */}
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 shrink-0 flex items-center justify-center overflow-hidden rounded-full mr-1">
-                    <img src="https://static.wixstatic.com/media/582523_9f72241791db48e48245a3df8ee58763~mv2.jpg" alt="John Collins Logo" className="w-full h-full object-contain scale-125 mix-blend-screen" />
-                  </div>
-
-                </div>
-              </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
                 
@@ -539,11 +438,18 @@
                         <div>
                           <p className="text-[10px] text-teal-700 uppercase font-extrabold tracking-wider font-mono">List Price</p>
                           <p className="text-xl min-[400px]:text-2xl sm:text-3xl font-black text-slate-950 mt-1 tracking-tight leading-none">${listing.price.toLocaleString()}</p>
+                          <button 
+                            onClick={() => triggerDownload("https://582523ab-e276-4202-8aba-1b723e2e6071.usrfiles.com/ugd/582523_71864b6d3e0b4aca8212d3d2de5ec4d7.pdf")}
+                            className="mt-1 text-[10px] text-teal-600 font-bold hover:text-teal-800 underline block text-left transition animate-pulse"
+                          >
+                            📈 Sunset Drive Market Review
+                          </button>
                         </div>
                         
                         <div>
                           <p className="text-[10px] text-teal-700 uppercase font-extrabold tracking-wider font-mono">Corner Space</p>
                           <p className="text-xl min-[400px]:text-2xl sm:text-3xl font-black text-teal-800 mt-1 tracking-tight leading-none">{listing.sqft} <span className="text-[10px] sm:text-xs font-normal text-slate-500">SqFt</span></p>
+                          <p className="text-[10px] text-slate-500 font-mono font-medium mt-1">${listing.sqft ? "564.56" : "0"} / SqFt</p>
                         </div>
 
                         <div className="pr-1 sm:pr-0">
@@ -557,7 +463,7 @@
                         </div>
                       </div>
 
-                      {/* NEW: Realtor Friendly Listing Block */}
+                      {/* Realtor Friendly Listing Block */}
                       <div className="mt-5 p-3 bg-[#D92228] border border-[#C01D22] rounded-xl shadow-[0_4px_12px_rgba(217,34,40,0.25)] text-center">
                         <p className="text-xs font-black text-white uppercase tracking-widest font-mono">REALTOR©-Friendly Listing</p>
                         <p className="text-[10px] text-[#FFD1D1] font-semibold mt-1">Full Cooperating Commission for Buyer's Agent</p>
@@ -601,7 +507,7 @@
                 {/* HERO RIGHT COLUMN: Interactive Magazine Gallery Grid */}
                 <div className="lg:col-span-7 flex flex-col space-y-4">
                   
-                  {/* Giant Premium Soft Framed Canvas */}
+                  {/* Main Featured Photo Grid Canvas */}
                   <div className="flex flex-col space-y-3">
                     <div 
                       className="relative aspect-[16/10] w-full rounded-3xl overflow-hidden border border-white shadow-xl bg-slate-50 cursor-pointer group"
@@ -979,6 +885,7 @@
                     {[
                       { label: "HOA Strata Fees", key: "strataFees", format: (v) => `$${v}/mo` },
                       { label: "Annual Property Taxes", key: "propertyTaxes", format: (v) => `$${v}/yr` },
+                      { label: "Average Electrical Utilities", key: "electricityCost", format: (v) => `$${v.toFixed(2)}/mo` },
                       { label: "Year Built", key: "yearBuilt" },
                       { label: "Secured Underground Parking", key: "parkingSpaces" },
                       { label: "Storage Locker allocation", key: "storageLockers" },
@@ -1001,7 +908,32 @@
               </div>
 
               {/* TOUR SCHEDULER & CONCIERGE BAR (4 COLS) */}
-              <div className="lg:col-span-4 space-y-8">
+              <div className="lg:col-span-4 space-y-6">
+
+                {/* BRANDED AGENT BANNER (Moved down to sit perfectly above the scheduler card) */}
+                <div className="flex justify-center w-full animate-fade-in">
+                  <div className="inline-flex items-center justify-between bg-slate-950 rounded-[40px] p-1.5 shadow-xl border border-slate-800 w-full">
+                    
+                    {/* Left: Headshot */}
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 shrink-0 rounded-full overflow-hidden border-2 border-slate-800 relative shadow-md bg-slate-900">
+                      <div className="absolute inset-0 shadow-[inset_0_2px_4px_rgba(0,0,0,0.6)] z-10 rounded-full pointer-events-none"></div>
+                      <img src="https://static.wixstatic.com/media/582523_6902dd24e85d4bf1903bce24a315d0ad~mv2.jpg" alt="John Collins" className="w-full h-full object-cover object-top relative z-0 scale-110" />
+                    </div>
+                    
+                    {/* Center: Details */}
+                    <div className="px-3 sm:px-4 text-center flex-1 min-w-0">
+                      <p className="text-[8px] sm:text-[9px] font-mono font-extrabold text-teal-400 tracking-widest uppercase truncate">Contact John Collins</p>
+                      <a href="mailto:John@JohnCollins.biz" className="block text-xs font-bold text-white hover:text-teal-300 transition mt-0.5 truncate">John@JohnCollins.biz</a>
+                      <p className="text-[9px] sm:text-[10px] font-medium text-slate-400 mt-0.5 tracking-wider font-mono">236.457.7003</p>
+                    </div>
+
+                    {/* Right: Logo */}
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 shrink-0 flex items-center justify-center overflow-hidden rounded-full mr-1">
+                      <img src="https://static.wixstatic.com/media/582523_9f72241791db48e48245a3df8ee58763~mv2.jpg" alt="John Collins Logo" className="w-full h-full object-contain scale-125 mix-blend-screen" />
+                    </div>
+
+                  </div>
+                </div>
 
                 {/* Clean Scheduling Widget */}
                 <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 border border-teal-100 shadow-xl shadow-teal-950/5 text-left relative overflow-hidden">
@@ -1013,6 +945,13 @@
                   <p className="text-xs text-slate-500 mb-4 leading-relaxed">
                     Connect directly with the seller representative to organize a showing, get more info, or present an offer.
                   </p>
+
+                  {/* Elegant No-Alert inline error notification */}
+                  {formError && (
+                    <div className="mb-4 bg-red-50 border border-red-200 text-red-800 p-3.5 rounded-xl text-xs font-bold animate-fade-in">
+                      ⚠️ {formError}
+                    </div>
+                  )}
 
                   {bookingSuccess ? (
                     <div className="bg-emerald-50 border border-emerald-100 text-emerald-800 p-4 rounded-xl text-center text-xs space-y-1">
@@ -1150,7 +1089,7 @@
 
           </main>
 
-                  {/* ==========================================
+          {/* ==========================================
               LEGAL TRANSPARENCY MODAL
               ========================================== */}
           {selectedDoc && (
@@ -1228,112 +1167,6 @@
           )}
 
           {/* ==========================================
-              OPEN HOUSE VIP MODAL
-              ========================================== */}
-          {isOpenHouseModalOpen && (
-            <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md transition-opacity">
-              <div className="bg-white border border-teal-100 rounded-[32px] w-full max-w-md shadow-2xl relative my-8 text-left animate-fade-in flex flex-col">
-                
-                {/* Close Button */}
-                <button 
-                  onClick={() => setIsOpenHouseModalOpen(false)}
-                  className="absolute top-4 right-4 p-2 bg-slate-100 hover:bg-slate-200 text-slate-500 rounded-full transition z-10"
-                >
-                  <Icon name="x" className="w-4 h-4" />
-                </button>
-
-                <div className="bg-teal-900 p-6 sm:p-8 text-center relative overflow-hidden">
-                  <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-teal-600/30 rounded-full blur-2xl"></div>
-                  <h3 className="text-2xl sm:text-3xl font-black text-white relative z-10 tracking-tight">Sip, Tour, <span className="text-teal-300">& Win.</span></h3>
-                  <p className="text-teal-100 text-xs sm:text-sm mt-2 relative z-10 font-medium">
-                    This Sunday, June 21st • 12:00 PM – 2:00 PM
-                  </p>
-                </div>
-
-                <div className="p-6 sm:p-8 space-y-6">
-                  {rsvpSuccess ? (
-                    <div className="bg-emerald-50 border border-emerald-200 p-6 rounded-2xl text-center space-y-2 animate-fade-in">
-                      <div className="text-3xl mb-2">🥂</div>
-                      <h4 className="text-emerald-800 font-black text-lg">You're on the list!</h4>
-                      <p className="text-emerald-700 text-xs leading-relaxed">
-                        Your bonus entry has been secured. We look forward to pouring your {rsvpForm.beverage.toLowerCase()} this Sunday!
-                      </p>
-                    </div>
-                  ) : (
-                    <>
-                      <div className="space-y-3">
-                        <p className="text-sm text-slate-600 leading-relaxed font-medium">
-                          Enjoy complimentary beverages and snacks while touring Suite 401. 
-                        </p>
-                        <div className="bg-amber-50 border border-amber-200 p-3 rounded-xl flex gap-3 items-start">
-                          <span className="text-xl">🎁</span>
-                          <p className="text-xs text-amber-900 font-semibold leading-relaxed">
-                            All attendees will be entered to win a <span className="font-black">$50 Gift Card</span> to your favorite local restaurant. RSVP below to claim a <span className="font-black text-amber-600 uppercase tracking-wider">Bonus Entry</span>!
-                          </p>
-                        </div>
-                      </div>
-
-                      <form onSubmit={handleRsvpSubmit} className="space-y-4 pt-2">
-                        <div className="space-y-1">
-                          <label className="text-[9px] uppercase tracking-wider font-extrabold text-teal-700 font-mono">Your Name</label>
-                          <input 
-                            type="text" 
-                            required
-                            value={rsvpForm.name}
-                            onChange={(e) => setRsvpForm({...rsvpForm, name: e.target.value})}
-                            placeholder="Jane Doe"
-                            className="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-sm text-slate-800 focus:border-teal-400 focus:bg-white outline-none transition"
-                          />
-                        </div>
-
-                        <div className="space-y-1">
-                          <label className="text-[9px] uppercase tracking-wider font-extrabold text-teal-700 font-mono">Your Email</label>
-                          <input 
-                            type="email" 
-                            required
-                            value={rsvpForm.email}
-                            onChange={(e) => setRsvpForm({...rsvpForm, email: e.target.value})}
-                            placeholder="To track your bonus entry"
-                            className="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-sm text-slate-800 focus:border-teal-400 focus:bg-white outline-none transition"
-                          />
-                        </div>
-
-                        <div className="space-y-2">
-                          <label className="text-[9px] uppercase tracking-wider font-extrabold text-teal-700 font-mono">What should we pour you?</label>
-                          <div className="grid grid-cols-2 gap-2">
-                            {['Red Wine', 'White Wine', 'Beer', 'Soda / Water'].map(drink => (
-                              <button
-                                key={drink}
-                                type="button"
-                                onClick={() => setRsvpForm({...rsvpForm, beverage: drink})}
-                                className={`py-2 px-3 rounded-xl text-xs font-bold border transition ${
-                                  rsvpForm.beverage === drink 
-                                    ? 'bg-teal-600 border-teal-600 text-white shadow-md' 
-                                    : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
-                                }`}
-                              >
-                                {drink}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-
-                        <button 
-                          type="submit" 
-                          className="w-full mt-2 py-3 bg-teal-900 hover:bg-teal-800 text-white font-bold text-xs uppercase tracking-widest rounded-xl transition shadow-lg font-mono"
-                        >
-                          RSVP & Claim Bonus Entry
-                        </button>
-                      </form>
-                    </>
-                  )}
-                </div>
-
-              </div>
-            </div>
-          )}
-
-          {/* ==========================================
               DISTRACTION FREE EXPOSURE FOOTER
               ========================================== */}
           <footer className="bg-white/50 backdrop-blur-md py-12 border-t border-white/40 text-center space-y-3 font-mono text-[10px] text-teal-800 font-bold select-none">
@@ -1350,7 +1183,6 @@
       );
     }
 
-    // Render App inside the browser
     const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(<App />);
   </script>
