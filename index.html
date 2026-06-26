@@ -69,9 +69,6 @@
     
     const { useState } = React;
 
-    // ==========================================
-    // BULLETPROOF RESORT & VISTA VECTOR ICONS
-    // ==========================================
     const Icon = ({ name, className = "w-5 h-5", ...props }) => {
       const icons = {
         building: (
@@ -119,9 +116,6 @@
       return icons[name] || null;
     };
 
-    // ==========================================
-    // RESORT GRADE LAKE & SUN PREVIEW FALLBACKS
-    // ==========================================
     const PREVIEW_FALLBACKS = {
       "17.jpg": "https://static.wixstatic.com/media/582523_c3ee5734059e4086ac1412b80b58942b~mv2.jpg",
       "1.jpg": "https://static.wixstatic.com/media/582523_6778a917188741c088cf4f6234aaaa96~mv2.jpg", 
@@ -142,9 +136,6 @@
       return url;
     };
 
-    // ==========================================
-    // LISTING INITIAL DATA SEED
-    // ==========================================
     const DEFAULT_LISTING = {
       title: "Wetland & Lakeview Corner Sanctuary",
       subtitle: "Suite 401 — Skye Tower at Waterscapes",
@@ -156,7 +147,7 @@
       den: "Enclosed Den with Glass Sliders",
       sqft: 1185,
       strataFees: 718.44,
-      propertyTaxes: 2905.00, // Updated to 2905 per year
+      propertyTaxes: 2905.00,
       yearBuilt: 2008,
       parkingSpaces: 1,
       storageLockers: 1,
@@ -269,11 +260,9 @@
       const [isLightboxOpen, setIsLightboxOpen] = useState(false);
       const [bookingForm, setBookingForm] = useState({ name: "", email: "", comments: "" });
       const [bookingSuccess, setBookingSuccess] = useState(false);
-      const [formError, setFormError] = useState("");
       const [selectedDoc, setSelectedDoc] = useState(null);
       const [selectedRoom, setSelectedRoom] = useState("Living & Dining Area");
 
-      // --- STRICT NEW TAB PDF TRIGGERING ---
       const triggerDownload = (url) => {
         if (!url || url === "") return;
         
@@ -291,11 +280,10 @@
       const handleBookingSubmit = (e) => {
         e.preventDefault();
         if (!bookingForm.name || !bookingForm.email) {
-          setFormError("Please fill out your credentials to request a tour.");
+          alert("Please fill out your credentials to request a tour.");
           return;
         }
         
-        setFormError("");
         fetch("https://formsubmit.co/ajax/john@johncollins.biz", {
           method: "POST",
           headers: { 
@@ -319,7 +307,7 @@
         })
         .catch(error => {
           console.error("Form submission network error:", error);
-          setFormError("Network blocked the request. Please test on your live Wix site.");
+          alert("Network blocked the request. Please test on your live Wix site.");
         });
       };
 
@@ -401,7 +389,23 @@
           <div className="relative z-10 flex flex-col min-h-screen">
 
           {/* ==========================================
-              LAKESIDE LUXURY HERO STAGE (No Top Banner, Clean Space)
+              STATIC CONTRASTING OPEN HOUSE BANNER
+              ========================================== */}
+          <div className="w-full bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 text-white shadow-md border-b border-amber-500/30">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 text-center">
+              <p className="text-xs sm:text-sm font-bold tracking-wide flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
+                <span className="bg-white/25 text-white px-2.5 py-0.5 rounded text-[10px] tracking-widest uppercase font-black border border-white/20">
+                  🏠 Open House
+                </span>
+                <span className="font-semibold text-white/95">
+                  Join us this Sunday, June 28th from 12:00 PM to 2:00 PM
+                </span>
+              </p>
+            </div>
+          </div>
+
+          {/* ==========================================
+              LAKESIDE LUXURY HERO STAGE (Tight, premium margins)
               ========================================== */}
           <section className="relative pt-6 pb-12 lg:pb-16 border-b border-teal-100/30">
 
@@ -440,7 +444,7 @@
                           <p className="text-xl min-[400px]:text-2xl sm:text-3xl font-black text-slate-950 mt-1 tracking-tight leading-none">${listing.price.toLocaleString()}</p>
                           <button 
                             onClick={() => triggerDownload("https://582523ab-e276-4202-8aba-1b723e2e6071.usrfiles.com/ugd/582523_71864b6d3e0b4aca8212d3d2de5ec4d7.pdf")}
-                            className="mt-1 text-[10px] text-teal-600 font-bold hover:text-teal-800 underline block text-left transition animate-pulse"
+                            className="mt-1 text-[10px] text-teal-600 font-bold hover:text-teal-800 underline block text-left transition"
                           >
                             📈 Sunset Drive Market Review
                           </button>
@@ -507,7 +511,7 @@
                 {/* HERO RIGHT COLUMN: Interactive Magazine Gallery Grid */}
                 <div className="lg:col-span-7 flex flex-col space-y-4">
                   
-                  {/* Main Featured Photo Grid Canvas */}
+                  {/* Giant Premium Soft Framed Canvas */}
                   <div className="flex flex-col space-y-3">
                     <div 
                       className="relative aspect-[16/10] w-full rounded-3xl overflow-hidden border border-white shadow-xl bg-slate-50 cursor-pointer group"
@@ -945,13 +949,6 @@
                   <p className="text-xs text-slate-500 mb-4 leading-relaxed">
                     Connect directly with the seller representative to organize a showing, get more info, or present an offer.
                   </p>
-
-                  {/* Elegant No-Alert inline error notification */}
-                  {formError && (
-                    <div className="mb-4 bg-red-50 border border-red-200 text-red-800 p-3.5 rounded-xl text-xs font-bold animate-fade-in">
-                      ⚠️ {formError}
-                    </div>
-                  )}
 
                   {bookingSuccess ? (
                     <div className="bg-emerald-50 border border-emerald-100 text-emerald-800 p-4 rounded-xl text-center text-xs space-y-1">
